@@ -1,4 +1,6 @@
+import textwrap
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -53,3 +55,15 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+
+player = Player(room['outside'])
+
+while True:
+    print(f"{player.room.name}\n")
+    print(f"{player.room.description}\n")
+    movement = input("[w] North  [a] West   [s] South  [d] East  [q] Quit\n")
+
+    if movement == 'q':
+        print("You abandon the adventure.")
+        quit()
