@@ -120,5 +120,12 @@ while True:
                 continue
             else:
                 player.current_room = new_room
+        elif verb == 'i' or verb == 'inventory':
+            if (len(player.items) > 0):
+                print("Inventory:\n")
+                for item in player.items:
+                    print(f"{item.name} - {item.description}\n")
+            else:
+                print("You have no items.")
         else:
             print("You don't understand that action.")
