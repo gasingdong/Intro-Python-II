@@ -6,6 +6,6 @@ class Room:
     name: ""
     description: ""
 
-    def __init__(self, nameIn, descriptionIn):
-        self.name = nameIn
-        self.description = descriptionIn
+    def __init__(self, name_in, description_in):
+        self.name = name_in
+        self.description = description_in

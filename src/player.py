@@ -3,7 +3,9 @@
 
 
 class Player:
-    room = ""
+    name = ""
+    current_room = ""
 
-    def __init__(self, startingRoom):
-        self.room = startingRoom
+    def __init__(self, name_in, starting_room):
+        self.name = name_in
+        self.current_room = starting_room
