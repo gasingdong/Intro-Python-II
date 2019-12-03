@@ -5,6 +5,10 @@
 class Room:
     name: ""
     description: ""
+    n_to: ""
+    s_to: ""
+    e_to: ""
+    w_to: ""
 
     def __init__(self, name_in, description_in):
         self.name = name_in
