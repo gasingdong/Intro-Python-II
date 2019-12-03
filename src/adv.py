@@ -91,7 +91,7 @@ while True:
                     found = True
                     room.items = [x for x in room.items if not x.name == obj]
                     player.items.append(item)
-                    print(f"You obtained {item.name}!")
+                    item.on_take()
                     break
             if not found:
                 print("That item isn't in this room.")
@@ -103,7 +103,7 @@ while True:
                     player.items = [
                         x for x in player.items if not x.name == obj]
                     room.items.append(item)
-                    print(f"You dropped {item.name}!")
+                    item.on_drop()
                     break
             if not found:
                 print("You don't have that item.")
