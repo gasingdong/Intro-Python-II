@@ -5,6 +5,7 @@
 class Player:
     name = ""
     current_room = ""
+    items = []
 
     def __init__(self, name_in, starting_room):
         self.name = name_in
