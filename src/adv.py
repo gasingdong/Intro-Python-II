@@ -6,25 +6,25 @@ from player import Player
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons."),
 
     'foyer':    Room("Foyer",
-                     """Dim light filters in from the south. Dusty passages
-                     run north and east."""),
+                     ("Dim light filters in from the south. Dusty passages " +
+                      "run north and east.")),
 
     'overlook': Room("Grand Overlook",
-                     """A steep cliff appears before you, falling into the
-                     darkness. Ahead to the north, a light flickers in the
-                     distance, but there is no way across the chasm."""),
+                     ("A steep cliff appears before you, falling into the " +
+                      "darkness. Ahead to the north, a light flickers in " +
+                      "the distance, but there is no way across the chasm.")),
 
     'narrow':   Room("Narrow Passage",
-                     """The narrow passage bends here from west to north. The
-                     smell of gold permeates the air."""),
+                     "The narrow passage bends here from west to north. The " +
+                     "smell of gold permeates the air."),
 
     'treasure': Room("Treasure Chamber",
-                     """You've found the long-lost treasure chamber! Sadly, it
-                     has already been completely emptied by earlier
-                     adventurers. The only exit is to the south."""),
+                     "You've found the long-lost treasure chamber! Sadly, " +
+                     "it has already been completely emptied by earlier " +
+                     "adventurers. The only exit is to the south."),
 }
 
 
@@ -56,14 +56,30 @@ room['treasure'].s_to = room['narrow']
 #
 # If the user enters "q", quit the game.
 
+direction = {
+    'w': 'n_to',
+    'a': 'w_to',
+    's': 's_to',
+    'd': 'e_to',
+}
 
 player = Player(room['outside'])
 
 while True:
-    print(f"{player.room.name}\n")
-    print(f"{player.room.description}\n")
+    currentRoom = player.room
+    print(f"\n{currentRoom.name}\n")
+    print(f"{currentRoom.description}\n")
     movement = input("[w] North  [a] West   [s] South  [d] East  [q] Quit\n")
 
     if movement == 'q':
         print("You abandon the adventure.")
         quit()
+    elif movement == 'w' or movement == 'a' or movement == 's' or movement == 'd':
+        newRoom = getattr(currentRoom, direction[movement], "")
+        if newRoom == "":
+            print("You cannot go there.")
+            continue
+        else:
+            player.room = newRoom
+    else:
+        print("You don't understand that direction.")
