@@ -68,13 +68,14 @@ player = Player(room['outside'])
 while True:
     currentRoom = player.room
     print(f"\n{currentRoom.name}\n")
-    print(f"{currentRoom.description}\n")
+    print(f"{textwrap.fill(currentRoom.description, 80)}\n")
     movement = input("[w] North  [a] West   [s] South  [d] East  [q] Quit\n")
 
     if movement == 'q':
         print("You abandon the adventure.")
         quit()
-    elif movement == 'w' or movement == 'a' or movement == 's' or movement == 'd':
+    elif (movement == 'w' or movement == 'a' or movement == 's'
+          or movement == 'd'):
         newRoom = getattr(currentRoom, direction[movement], "")
         if newRoom == "":
             print("You cannot go there.")
