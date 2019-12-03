@@ -3,14 +3,12 @@
 
 
 class Room:
-    name: ""
-    description: ""
-    n_to: ""
-    s_to: ""
-    e_to: ""
-    w_to: ""
-    items: []
 
     def __init__(self, name_in, description_in):
         self.name = name_in
         self.description = description_in
+        self.n_to = ""
+        self.s_to = ""
+        self.e_to = ""
+        self.w_to = ""
+        self.items = []

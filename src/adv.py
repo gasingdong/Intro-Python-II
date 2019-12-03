@@ -40,6 +40,8 @@ rooms['narrow'].w_to = rooms['foyer']
 rooms['narrow'].n_to = rooms['treasure']
 rooms['treasure'].s_to = rooms['narrow']
 
+rooms['outside'].items.append(Item("lantern", "A lantern with oil."))
+
 #
 # Main
 #
@@ -70,18 +72,53 @@ while True:
     room = player.current_room
     print(f"\n{room.name}\n")
     print(f"{textwrap.fill(room.description, 80)}\n")
-    movement = input("[n] North  [w] West   [s] South  [e] East  [q] Quit\n")
 
-    if movement == 'q':
-        print("You abandon the adventure.")
-        quit()
-    elif (movement == 'n' or movement == 'w' or movement == 's'
-          or movement == 'e'):
-        new_room = getattr(room, directions[movement], "")
-        if new_room == "":
-            print("You cannot go there.")
-            continue
+    if (len(room.items) > 0):
+        print("Items:\n")
+        for item in room.items:
+            print(f"{item.name} - {item.description}\n")
+    action = input(
+        "[n] North  [w] West   [s] South  [e] East  [q] Quit\n").split(" ")
+    verb = action[0]
+    has_object = len(action) > 1
+
+    if has_object:
+        obj = action[1]
+        if verb == "take" or verb == "get":
+            found = False
+            for item in room.items:
+                if (item.name == obj):
+                    found = True
+                    room.items = [x for x in room.items if not x.name == obj]
+                    player.items.append(item)
+                    print(f"You obtained {item.name}!")
+                    break
+            if not found:
+                print("That item isn't in this room.")
+        elif verb == "drop":
+            found = False
+            for item in player.items:
+                if (item.name == obj):
+                    found = True
+                    player.items = [
+                        x for x in player.items if not x.name == obj]
+                    room.items.append(item)
+                    print(f"You dropped {item.name}!")
+                    break
+            if not found:
+                print("You don't have that item.")
         else:
-            player.current_room = new_room
+            print("You don't understand that action.")
     else:
-        print("You don't understand that direction.")
+        if verb == 'q':
+            print("You abandon the adventure.")
+            quit()
+        elif (verb == 'n' or verb == 'w' or verb == 's' or verb == 'e'):
+            new_room = getattr(room, directions[verb], "")
+            if new_room == "":
+                print("You cannot go there.")
+                continue
+            else:
+                player.current_room = new_room
+        else:
+            print("You don't understand that action.")
