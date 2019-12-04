@@ -24,7 +24,7 @@ class Player:
             print("You cannot go there.")
         else:
             self.current_room = new_room
-            self.current_room.get_scene()
+            self.current_room.setup(self)
 
     def get_items(self):
         if (len(self.items) > 0):

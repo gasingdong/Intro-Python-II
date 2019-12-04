@@ -43,6 +43,9 @@ class Map:
         self.rooms['narrow'].n_to = self.rooms['treasure']
         self.rooms['treasure'].s_to = self.rooms['narrow']
 
+        self.rooms['outside'].natural_light = True
+        self.rooms['overlook'].natural_light = True
+
         self.rooms['outside'].add_item(Item("lantern", "a lantern with oil"))
 
     def get_starting_room(self):
