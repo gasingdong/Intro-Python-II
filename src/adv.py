@@ -89,28 +89,9 @@ while True:
     if has_object:
         obj = action[1]
         if verb == "take" or verb == "get":
-            found = False
-            for item in room.items:
-                if (item.name == obj):
-                    found = True
-                    room.items = [x for x in room.items if not x.name == obj]
-                    player.items.append(item)
-                    item.on_take()
-                    break
-            if not found:
-                print("That item isn't in this room.")
+            player.take_item(obj)
         elif verb == "drop":
-            found = False
-            for item in player.items:
-                if (item.name == obj):
-                    found = True
-                    player.items = [
-                        x for x in player.items if not x.name == obj]
-                    room.items.append(item)
-                    item.on_drop()
-                    break
-            if not found:
-                print("You don't have that item.")
+            player.drop_item(obj)
         else:
             print("You don't understand that action.")
     else:
@@ -118,21 +99,10 @@ while True:
             print("You abandon the adventure.")
             quit()
         elif (verb == 'n' or verb == 'w' or verb == 's' or verb == 'e'):
-            new_room = getattr(room, directions[verb], "")
-            if new_room == "":
-                print("You cannot go there.")
-                continue
-            else:
-                player.current_room = new_room
-                player.current_room.get_scene()
+            player.move(room, directions[verb])
         elif verb == 'l' or verb == 'look':
             room.get_scene()
         elif verb == 'i' or verb == 'inventory':
-            if (len(player.items) > 0):
-                print("Inventory:\n")
-                for item in player.items:
-                    print(f"{item.name} - {item.description}\n")
-            else:
-                print("You have no items.")
+            player.get_items()
         else:
             print("You don't understand that action.")
