@@ -1,6 +1,6 @@
 import copy
 from room import Room
-from item import Item, LightSource
+from item import *
 
 
 class Map:
@@ -16,7 +16,7 @@ class Map:
         'overlook': Room("Grand Overlook",
                          ("A steep cliff appears before you, falling into " +
                           "the darkness. Ahead to the north, a light " +
-                          "flickets in the distance, but there is no " +
+                          "flickers in the distance, but there is no " +
                           "way across the chasm.")),
 
         'narrow':   Room("Narrow Passage",
@@ -47,6 +47,8 @@ class Map:
         self.rooms['foyer'].natural_light = True
 
         self.rooms['outside'].add_item(LightSource("lantern", "a lit lantern"))
+        self.rooms['narrow'].add_item(Weapon("rusty sword", "a rusty sword"))
+        self.rooms['narrow'].add_item(Weapon("silver sword", "a silver sword"))
 
     def get_starting_room(self):
         return self.rooms['outside']

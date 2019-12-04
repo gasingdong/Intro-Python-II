@@ -20,3 +20,11 @@ class LightSource(Item):
     def on_drop(self):
         super().on_drop()
         print("Are you sure about that? It's dark around here.")
+
+
+class Weapon(Item):
+    pass
+
+
+class Treasure(Item):
+    pass

@@ -38,10 +38,22 @@ class Room:
     def get_scene(self):
         print(f"{self.name}\n")
         print(f"{textwrap.fill(self.description, 80)}")
+        num_items = len(self.items)
 
-        if (len(self.items) > 0):
-            items_text = textwrap.fill(
-                ', '.join(item.description for item in self.items), 80)
+        if num_items > 0:
+            items_text = ""
+
+            if num_items == 1:
+                items_text = textwrap.fill(self.items[0].description, 80)
+            elif num_items == 2:
+                items_text = textwrap.fill(
+                    f"{self.items[0].description} and " +
+                    f"{self.items[1].description}", 80
+                )
+            else:
+                items_text = textwrap.fill(
+                    ', '.join(item.description for item in self.items[:-1]) +
+                    f", and {self.items[-1].description}", 80)
             print(f"\nYou see {items_text}.")
 
     def add_item(self, itemIn):
