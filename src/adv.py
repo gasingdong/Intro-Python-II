@@ -67,6 +67,7 @@ commands = [
     LookCommand("Look Around", "l", "look"),
     InventoryCommand("Inventory", "i", "inventory"),
     MoveCommand("Move", "n", "w", "s", "e"),
+    HelpCommand("Help", "h", "help"),
 ]
 
 player = Player("player", rooms['outside'])
@@ -74,10 +75,10 @@ print("")
 player.current_room.get_scene()
 
 while True:
-    room = player.current_room
     print("")
     action = input(
-        "[n] North  [w] West   [s] South  [e] East  [q] Quit\n").split(" ")
+        "[n] North  [w] West   [s] South  [e] East  [h] Help [q] Quit\n"
+    ).split(" ")
     print("")
     verb = action[0]
     processed = False

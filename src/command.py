@@ -1,14 +1,27 @@
-class Command:
+from abc import ABCMeta, abstractmethod
+
+
+class Command(metaclass=ABCMeta):
+    commands = []
 
     def __init__(self, tooltipIn, *inputsIn):
         self.inputs = inputsIn
         self.tooltip = tooltipIn
+        Command.commands.append(self)
 
     def get_tooltip(self):
         return f"[{self.inputs[0]}] {self.tooltip}"
 
+    @abstractmethod
     def process(self, playerIn, *args):
-        raise NotImplementedError
+        pass
+
+
+class HelpCommand(Command):
+
+    def process(self, playerIn, *args):
+        for command in Command.commands:
+            print(command.get_tooltip())
 
 
 class LookCommand(Command):
@@ -27,6 +40,10 @@ class MoveCommand(Command):
 
     def process(self, playerIn, *args):
         playerIn.move(args[0])
+
+    def get_tooltip(self):
+        s = "/".join(self.inputs)
+        return f"[{s}] {self.tooltip}"
 
 
 class TakeCommand(Command):
