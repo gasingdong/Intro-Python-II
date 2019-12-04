@@ -3,7 +3,8 @@ from room import Room
 from item import Item
 from player import Player
 from map import Map
-from command import *
+from command import QuitCommand
+from game_command import *
 
 commands = [
     QuitCommand("Quit", "q", "quit"),
@@ -15,28 +16,30 @@ commands = [
     HelpCommand("Help", "h", "help"),
 ]
 
-map = Map()
-map.setup()
 
-player = Player("player", map.get_starting_room())
-print("")
-player.current_room.get_scene()
+def start_game_loop(data=None):
+    map = Map()
+    map.setup()
 
-while True:
+    player = Player("player", map.get_starting_room())
     print("")
-    action = input(
-        "[n] North  [w] West   [s] South  [e] East  [h] Help [q] Quit\n"
-    ).split(" ")
-    print("")
-    verb = action[0]
-    processed = False
+    player.current_room.get_scene()
 
-    if len(action) <= 3 and verb != "":
-        for command in commands:
-            if verb in command.inputs:
-                command.process(player, *action)
-                processed = True
-                break
+    while True:
+        print("")
+        action = input(
+            "[n] North  [w] West   [s] South  [e] East  [h] Help [q] Quit\n"
+        ).split(" ")
+        print("")
+        verb = action[0]
+        processed = False
 
-    if not processed:
-        print("You don't understand that action.")
+        if len(action) <= 3 and verb != "":
+            for command in commands:
+                if verb in command.inputs:
+                    command.process(player, *action)
+                    processed = True
+                    break
+
+        if not processed:
+            print("You don't understand that action.")
