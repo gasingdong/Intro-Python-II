@@ -5,14 +5,21 @@ from item import Item
 
 
 class Player:
+    directions = {
+        'n': 'n_to',
+        'w': 'w_to',
+        's': 's_to',
+        'e': 'e_to',
+    }
 
     def __init__(self, name_in, starting_room):
         self.name = name_in
         self.current_room = starting_room
         self.items = []
 
-    def move(self, roomIn, directionIn):
-        new_room = getattr(roomIn, directionIn, "")
+    def move(self, directionIn):
+        new_room = getattr(self.current_room,
+                           Player.directions[directionIn], "")
         if new_room == "":
             print("You cannot go there.")
         else:

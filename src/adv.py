@@ -2,6 +2,7 @@ import textwrap
 from room import Room
 from item import Item
 from player import Player
+from command import *
 
 # Declare all the rooms
 
@@ -59,12 +60,14 @@ rooms['outside'].add_item(Item("lantern", "a lantern with oil"))
 #
 # If the user enters "q", quit the game.
 
-directions = {
-    'n': 'n_to',
-    'w': 'w_to',
-    's': 's_to',
-    'e': 'e_to',
-}
+commands = [
+    QuitCommand("Quit", "q", "quit"),
+    TakeCommand("Take Item", "take", "get"),
+    DropCommand("Drop Item", "drop", "lose"),
+    LookCommand("Look Around", "l", "look"),
+    InventoryCommand("Inventory", "i", "inventory"),
+    MoveCommand("Move", "n", "w", "s", "e"),
+]
 
 player = Player("player", rooms['outside'])
 print("")
@@ -77,32 +80,14 @@ while True:
         "[n] North  [w] West   [s] South  [e] East  [q] Quit\n").split(" ")
     print("")
     verb = action[0]
-    args = len(action)
+    processed = False
 
-    if args > 3:
+    if len(action) <= 3 and verb != "":
+        for command in commands:
+            if verb in command.inputs:
+                command.process(player, *action)
+                processed = True
+                break
+
+    if not processed:
         print("You don't understand that action.")
-        continue
-
-    has_object = len(action) > 1
-    has_adj = len(action) > 2
-
-    if has_object:
-        obj = action[1]
-        if verb == "take" or verb == "get":
-            player.take_item(obj)
-        elif verb == "drop":
-            player.drop_item(obj)
-        else:
-            print("You don't understand that action.")
-    else:
-        if verb == 'q':
-            print("You abandon the adventure.")
-            quit()
-        elif (verb == 'n' or verb == 'w' or verb == 's' or verb == 'e'):
-            player.move(room, directions[verb])
-        elif verb == 'l' or verb == 'look':
-            room.get_scene()
-        elif verb == 'i' or verb == 'inventory':
-            player.get_items()
-        else:
-            print("You don't understand that action.")
