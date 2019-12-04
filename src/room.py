@@ -1,7 +1,7 @@
 # Implement a class to hold room information. This should have name and
 # description attributes.
 import textwrap
-from item import Item
+from item import Item, LightSource
 
 
 class Room:
@@ -17,7 +17,20 @@ class Room:
         self.natural_light = False
 
     def setup(self, playerIn):
-        if self.natural_light:
+        is_lit = self.natural_light
+        if not is_lit:
+            for item in self.items:
+                if isinstance(item, LightSource):
+                    is_lit = True
+                    break
+
+            if not is_lit:
+                for item in playerIn.items:
+                    if isinstance(item, LightSource):
+                        is_lit = True
+                    break
+
+        if is_lit:
             self.get_scene()
         else:
             print("It's pitch dark. You can't see anything.")

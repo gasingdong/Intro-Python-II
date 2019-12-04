@@ -1,6 +1,6 @@
 import copy
 from room import Room
-from item import Item
+from item import Item, LightSource
 
 
 class Map:
@@ -44,9 +44,9 @@ class Map:
         self.rooms['treasure'].s_to = self.rooms['narrow']
 
         self.rooms['outside'].natural_light = True
-        self.rooms['overlook'].natural_light = True
+        self.rooms['foyer'].natural_light = True
 
-        self.rooms['outside'].add_item(Item("lantern", "a lantern with oil"))
+        self.rooms['outside'].add_item(LightSource("lantern", "a lit lantern"))
 
     def get_starting_room(self):
         return self.rooms['outside']

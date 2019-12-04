@@ -9,3 +9,14 @@ class Item:
 
     def on_drop(self):
         print(f"You have dropped {self.name}!")
+
+
+class LightSource(Item):
+
+    def on_take(self):
+        super().on_take()
+        print("There's light emanating from it.")
+
+    def on_drop(self):
+        super().on_drop()
+        print("Are you sure about that? It's dark around here.")
