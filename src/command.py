@@ -49,13 +49,25 @@ class MoveCommand(Command):
 class TakeCommand(Command):
 
     def process(self, playerIn, *args):
-        playerIn.take_item(args[1])
+        if args[1] == "it":
+            if playerIn.last_item is not None:
+                playerIn.take_item(playerIn.last_item.name)
+            else:
+                print("What's 'it'?")
+        else:
+            playerIn.take_item(args[1])
 
 
 class DropCommand(Command):
 
     def process(self, playerIn, *args):
-        playerIn.drop_item(args[1])
+        if args[1] == "it":
+            if playerIn.last_item is not None:
+                playerIn.drop_item(playerIn.last_item.name)
+            else:
+                print("What's 'it'?")
+        else:
+            playerIn.drop_item(args[1])
 
 
 class QuitCommand(Command):

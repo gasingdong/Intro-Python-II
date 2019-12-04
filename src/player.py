@@ -16,6 +16,7 @@ class Player:
         self.name = name_in
         self.current_room = starting_room
         self.items = []
+        self.last_item = None
 
     def move(self, directionIn):
         new_room = getattr(self.current_room,
@@ -50,6 +51,7 @@ class Player:
                 self.current_room.items = [
                     x for x in self.current_room.items if not x.name == itemIn]
                 self.add_item(item)
+                self.last_item = item
                 break
         if not found:
             print("That item isn't in this room.")
@@ -61,7 +63,8 @@ class Player:
                 found = True
                 self.items = [
                     x for x in self.items if not x.name == itemIn]
-                self.current_room.items.append(item)
+                self.current_room.add_item(item)
+                self.last_item = item
                 item.on_drop()
                 break
         if not found:
