@@ -1,5 +1,7 @@
 # Implement a class to hold room information. This should have name and
 # description attributes.
+import textwrap
+from item import Item
 
 
 class Room:
@@ -12,3 +14,19 @@ class Room:
         self.e_to = ""
         self.w_to = ""
         self.items = []
+
+    def get_scene(self):
+        print(f"{self.name}\n")
+        print(f"{textwrap.fill(self.description, 80)}")
+
+        if (len(self.items) > 0):
+            items_text = textwrap.fill(
+                ', '.join(item.description for item in self.items), 80)
+            print(f"\nYou see {items_text}.")
+
+    def add_item(self, itemIn):
+        if isinstance(itemIn, Item):
+            self.items.append(itemIn)
+        else:
+            raise Exception(
+                f"Attempted to add non-item {itemIn.name} to room.")

@@ -40,7 +40,7 @@ rooms['narrow'].w_to = rooms['foyer']
 rooms['narrow'].n_to = rooms['treasure']
 rooms['treasure'].s_to = rooms['narrow']
 
-rooms['outside'].items.append(Item("lantern", "A lantern with oil."))
+rooms['outside'].add_item(Item("lantern", "a lantern with oil"))
 
 #
 # Main
@@ -67,20 +67,24 @@ directions = {
 }
 
 player = Player("player", rooms['outside'])
+print("")
+player.current_room.get_scene()
 
 while True:
     room = player.current_room
-    print(f"\n{room.name}\n")
-    print(f"{textwrap.fill(room.description, 80)}\n")
-
-    if (len(room.items) > 0):
-        print("Items:\n")
-        for item in room.items:
-            print(f"{item.name} - {item.description}\n")
+    print("")
     action = input(
         "[n] North  [w] West   [s] South  [e] East  [q] Quit\n").split(" ")
+    print("")
     verb = action[0]
+    args = len(action)
+
+    if args > 3:
+        print("You don't understand that action.")
+        continue
+
     has_object = len(action) > 1
+    has_adj = len(action) > 2
 
     if has_object:
         obj = action[1]
@@ -120,6 +124,9 @@ while True:
                 continue
             else:
                 player.current_room = new_room
+                player.current_room.get_scene()
+        elif verb == 'l' or verb == 'look':
+            room.get_scene()
         elif verb == 'i' or verb == 'inventory':
             if (len(player.items) > 0):
                 print("Inventory:\n")
