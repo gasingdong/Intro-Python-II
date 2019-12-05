@@ -1,4 +1,37 @@
 from command import Command
+from map import Map
+from room import Room
+import json
+
+
+class SaveCommand(Command):
+    def process(self, gameIn, *args):
+        player = gameIn.player
+        data = {}
+        data['player'] = {
+            'name': player.name,
+            'current_room': player.current_room.id,
+            'items': list(map(lambda item: item.id, player.items)),
+        }
+        data['rooms'] = []
+        rooms = gameIn.map.rooms
+        for room in rooms:
+            n_to = rooms[room].n_to
+            w_to = rooms[room].w_to
+            s_to = rooms[room].s_to
+            e_to = rooms[room].e_to
+            data['rooms'].append({
+                "id": room,
+                "n_to": n_to.id if isinstance(n_to, Room) else "",
+                "w_to": w_to.id if isinstance(w_to, Room) else "",
+                "s_to": s_to.id if isinstance(s_to, Room) else "",
+                "e_to": e_to.id if isinstance(e_to, Room) else "",
+                "items": list(map(lambda item: item.id,
+                                  rooms[room].items))
+            })
+        with open('src/save.txt', 'w+') as outfile:
+            json.dump(data, outfile)
+        print("Your adventure has been saved.")
 
 
 class HelpCommand(Command):
