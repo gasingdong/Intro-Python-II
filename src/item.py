@@ -1,6 +1,7 @@
 class Item:
 
-    def __init__(self, name_in, description_in):
+    def __init__(self, id_in, name_in, description_in):
+        self.id = id_in
         self.name = name_in
         self.description = description_in
 

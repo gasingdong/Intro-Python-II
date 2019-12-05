@@ -3,6 +3,7 @@ from room import Room
 from item import Item
 from player import Player
 from map import Map
+from game import Game
 from command import QuitCommand
 from game_command import *
 
@@ -23,6 +24,7 @@ def start_game_loop(data=None):
 
     player = Player("player", map.get_starting_room())
     print("")
+    game = Game(player, map)
     player.current_room.get_scene()
 
     while True:
@@ -37,7 +39,7 @@ def start_game_loop(data=None):
         if len(action) <= 3 and verb != "":
             for command in commands:
                 if verb in command.inputs:
-                    command.process(player, *action)
+                    command.process(game, *action)
                     processed = True
                     break
 

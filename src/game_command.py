@@ -3,27 +3,27 @@ from command import Command
 
 class HelpCommand(Command):
 
-    def process(self, playerIn, *args):
+    def process(self, gameIn, *args):
         for command in Command.commands:
             print(command.get_tooltip())
 
 
 class LookCommand(Command):
 
-    def process(self, playerIn, *args):
-        playerIn.current_room.get_scene()
+    def process(self, gameIn, *args):
+        gameIn.player.current_room.get_scene()
 
 
 class InventoryCommand(Command):
 
-    def process(self, playerIn, *args):
-        playerIn.get_items()
+    def process(self, gameIn, *args):
+        gameIn.player.get_items()
 
 
 class MoveCommand(Command):
 
-    def process(self, playerIn, *args):
-        playerIn.move(args[0])
+    def process(self, gameIn, *args):
+        gameIn.player.move(args[0])
 
     def get_tooltip(self):
         s = "/".join(self.inputs)
@@ -32,23 +32,25 @@ class MoveCommand(Command):
 
 class TakeCommand(Command):
 
-    def process(self, playerIn, *args):
+    def process(self, gameIn, *args):
+        player = gameIn.player
         if args[1] == "it":
-            if playerIn.last_item is not None:
-                playerIn.take_item(playerIn.last_item.name)
+            if player.last_item is not None:
+                player.take_item(player.last_item.name)
             else:
                 print("What's 'it'?")
         else:
-            playerIn.take_item(args[1])
+            player.take_item(args[1])
 
 
 class DropCommand(Command):
 
-    def process(self, playerIn, *args):
+    def process(self, gameIn, *args):
+        player = gameIn.player
         if args[1] == "it":
-            if playerIn.last_item is not None:
-                playerIn.drop_item(playerIn.last_item.name)
+            if player.last_item is not None:
+                player.drop_item(player.last_item.name)
             else:
                 print("What's 'it'?")
         else:
-            playerIn.drop_item(args[1])
+            player.drop_item(args[1])
