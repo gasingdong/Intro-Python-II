@@ -73,7 +73,21 @@ class TakeCommand(Command):
             else:
                 print("What's 'it'?")
         else:
-            player.take_item(args[1])
+            full_name = " ".join(args[1:])
+            possible_matches = []
+            found = False
+            for item in player.current_room.items:
+                if full_name == item.name:
+                    found = True
+                    player.take_item(full_name)
+                    break
+                elif full_name in item.name:
+                    possible_matches.append(item.name)
+            if not found and possible_matches:
+                if len(possible_matches) == 1:
+                    player.take_item(possible_matches[0])
+                else:
+                    print(f"I don't know which you mean: {possible_matches}")
 
 
 class DropCommand(Command):
