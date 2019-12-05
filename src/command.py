@@ -2,33 +2,21 @@ from abc import ABCMeta, abstractmethod
 
 
 class Command(metaclass=ABCMeta):
-    commands = []
 
     def __init__(self, tooltipIn, *inputsIn):
         self.inputs = inputsIn
         self.tooltip = tooltipIn
-        Command.commands.append(self)
 
     def get_tooltip(self):
-        return f"[{self.inputs[0]}] {self.tooltip}"
+        return f"[{'/'.join(self.inputs[:6])}] {self.tooltip}"
 
     @abstractmethod
-    def process(self, game, *args):
+    def process(self, *args):
         pass
 
 
-class QuitCommand(Command):
+class GameCommand(Command, metaclass=ABCMeta):
 
-    def process(self, gameIn, *args):
-        if gameIn is not None:
-            action = input(
-                "Are you sure you want to abandon the adventure? [y/n]\n")
-            print("")
-
-            if action == 'y':
-                print("You abandon the adventure.")
-                quit()
-            else:
-                gameIn.player.current_room.get_scene()
-        else:
-            quit()
+    def __init__(self, gameIn, tooltipIn, *inputsIn):
+        super().__init__(tooltipIn, *inputsIn)
+        self.game = gameIn

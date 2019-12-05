@@ -1,12 +1,12 @@
-from command import Command
+from command import GameCommand
 from map import Map
 from room import Room
 import json
 
 
-class SaveCommand(Command):
-    def process(self, gameIn, *args):
-        player = gameIn.player
+class SaveCommand(GameCommand):
+    def process(self, *args):
+        player = self.game.player
         data = {}
         data['player'] = {
             'name': player.name,
@@ -34,39 +34,39 @@ class SaveCommand(Command):
         print("Your adventure has been saved.")
 
 
-class HelpCommand(Command):
+class HelpCommand(GameCommand):
 
-    def process(self, gameIn, *args):
-        for command in Command.commands:
+    def process(self, *args):
+        for command in self.game.commands:
             print(command.get_tooltip())
 
 
-class LookCommand(Command):
+class LookCommand(GameCommand):
 
-    def process(self, gameIn, *args):
-        gameIn.player.current_room.get_scene()
-
-
-class InventoryCommand(Command):
-
-    def process(self, gameIn, *args):
-        gameIn.player.get_items()
+    def process(self, *args):
+        self.game.player.current_room.get_scene()
 
 
-class MoveCommand(Command):
+class InventoryCommand(GameCommand):
 
-    def process(self, gameIn, *args):
-        gameIn.player.move(args[0])
+    def process(self, *args):
+        self.game.player.get_items()
+
+
+class MoveCommand(GameCommand):
+
+    def process(self, *args):
+        self.game.player.move(args[0])
 
     def get_tooltip(self):
         s = "/".join(self.inputs)
         return f"[{s}] {self.tooltip}"
 
 
-class TakeCommand(Command):
+class TakeCommand(GameCommand):
 
-    def process(self, gameIn, *args):
-        player = gameIn.player
+    def process(self, *args):
+        player = self.game.player
         if args[1] == "it":
             if player.last_item is not None:
                 player.take_item(player.last_item.name)
@@ -90,10 +90,10 @@ class TakeCommand(Command):
                     print(f"I don't know which you mean: {possible_matches}")
 
 
-class DropCommand(Command):
+class DropCommand(GameCommand):
 
-    def process(self, gameIn, *args):
-        player = gameIn.player
+    def process(self, *args):
+        player = self.game.player
         if args[1] == "it":
             if player.last_item is not None:
                 player.drop_item(player.last_item.name)
@@ -101,3 +101,17 @@ class DropCommand(Command):
                 print("What's 'it'?")
         else:
             player.drop_item(args[1])
+
+
+class QuitCommand(GameCommand):
+
+    def process(self, *args):
+        action = input(
+            "Are you sure you want to abandon the adventure? [y/n]\n")
+        print("")
+
+        if action == 'y':
+            print("You abandon the adventure.")
+            quit()
+        else:
+            self.game.player.current_room.get_scene()

@@ -5,14 +5,20 @@ import json
 
 class NewGameCommand(Command):
 
-    def process(self, gameIn, *args):
+    def process(self, *args):
         start_game_loop()
 
 
-class LoadGameCommand(Command):
+class ContinueCommand(Command):
 
-    def process(self, gameIn, *args):
+    def process(self, *args):
         data = None
         with open('src/save.txt') as file:
             data = json.load(file)
         start_game_loop(data)
+
+
+class QuitMenuCommand(Command):
+
+    def process(self, *args):
+        quit()
