@@ -37,8 +37,22 @@ class Map:
                                "a silver sword"),
     }
 
-    def __init__(self):
-        self.rooms = copy.deepcopy(Map.rooms)
+    def __init__(self, roomsIn=None):
+        if roomsIn is None:
+            self.rooms = copy.deepcopy(Map.rooms)
+        else:
+            def load_room(roomDataIn):
+                room = Map.rooms[roomDataIn['id']]
+                room.n_to = roomDataIn['n_to']
+                room.w_to = roomDataIn['w_to']
+                room.s_to = roomDataIn['s_to']
+                room.e_to = roomDataIn['e_to']
+                room.items = list(map(
+                    lambda item: Map.items[item], roomDataIn['items']))
+                return room
+            self.rooms = {}
+            for room in roomsIn:
+                self.rooms[room['id']] = load_room(room)
 
     def setup(self):
         self.rooms['outside'].n_to = self.rooms['foyer']

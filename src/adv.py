@@ -20,10 +20,18 @@ commands = [
 
 
 def start_game_loop(data=None):
-    map = Map()
-    map.setup()
+    map = None
+    player = None
 
-    player = Player("player", map.get_starting_room())
+    if data is None:
+        map = Map()
+        map.setup()
+        player = Player("player", map.get_starting_room())
+    else:
+        map = Map(data['rooms'])
+        player = Player("player", map.get_starting_room())
+        player.load_player_data(data['player'])
+
     print("")
     game = Game(player, map)
     player.current_room.get_scene()

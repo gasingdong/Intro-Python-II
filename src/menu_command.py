@@ -1,5 +1,6 @@
 from command import Command
 from adv import start_game_loop
+import json
 
 
 class NewGameCommand(Command):
@@ -11,4 +12,7 @@ class NewGameCommand(Command):
 class LoadGameCommand(Command):
 
     def process(self, gameIn, *args):
-        pass
+        data = None
+        with open('src/save.txt') as file:
+            data = json.load(file)
+        start_game_loop(data)

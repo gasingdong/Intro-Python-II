@@ -20,8 +20,7 @@ class Command(metaclass=ABCMeta):
 class QuitCommand(Command):
 
     def process(self, gameIn, *args):
-        player = gameIn.player
-        if player is not None:
+        if gameIn is not None:
             action = input(
                 "Are you sure you want to abandon the adventure? [y/n]\n")
             print("")
@@ -30,6 +29,6 @@ class QuitCommand(Command):
                 print("You abandon the adventure.")
                 quit()
             else:
-                player.current_room.get_scene()
+                gameIn.player.current_room.get_scene()
         else:
             quit()

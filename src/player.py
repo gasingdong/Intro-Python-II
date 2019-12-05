@@ -2,6 +2,7 @@
 # currently.
 import textwrap
 from item import Item
+from map import Map
 
 
 class Player:
@@ -17,6 +18,11 @@ class Player:
         self.current_room = starting_room
         self.items = []
         self.last_item = None
+
+    def load_player_data(self, dataIn):
+        self.name = dataIn['name']
+        self.current_room = Map.rooms[dataIn['current_room']]
+        self.items = list(map(lambda item: Map.items[item], dataIn['items']))
 
     def move(self, directionIn):
         new_room = getattr(self.current_room,
