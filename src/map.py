@@ -43,10 +43,11 @@ class Map:
         else:
             def load_room(roomDataIn):
                 room = Map.rooms[roomDataIn['id']]
-                room.n_to = roomDataIn['n_to']
-                room.w_to = roomDataIn['w_to']
-                room.s_to = roomDataIn['s_to']
-                room.e_to = roomDataIn['e_to']
+                directions = ['n_to', 'w_to', 's_to', 'e_to']
+                for x in directions:
+                    dir_room = roomDataIn[x]
+                    setattr(
+                        room, x, Map.rooms[dir_room] if dir_room else "")
                 room.items = list(map(
                     lambda item: Map.items[item], roomDataIn['items']))
                 return room

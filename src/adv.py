@@ -15,7 +15,7 @@ commands = [
     InventoryCommand("Inventory", "i", "inventory"),
     MoveCommand("Move", "n", "w", "s", "e"),
     HelpCommand("Help", "h", "help"),
-    SaveCommand("Save", "save"),
+    SaveCommand("Save", "v", "save"),
 ]
 
 
@@ -39,7 +39,7 @@ def start_game_loop(data=None):
     while True:
         print("")
         action = input(
-            "[n/w/s/e] Move  [h] Help [save] Save [q] Quit\n"
+            "[n/w/s/e] Move  [h] Help [v] Save [q] Quit\n"
         ).split(" ")
         print("")
         verb = action[0]
